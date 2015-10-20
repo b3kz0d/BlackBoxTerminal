@@ -1,0 +1,14 @@
+D:\Projects\ComPortTerminal\ComPortTerminal\bin\Debug\ComPortTerminal.exe.config
+D:\Projects\ComPortTerminal\ComPortTerminal\bin\Debug\ComPortTerminal.exe
+D:\Projects\ComPortTerminal\ComPortTerminal\bin\Debug\ComPortTerminal.pdb
+D:\Projects\ComPortTerminal\ComPortTerminal\obj\Debug\ComPortTerminal.csprojResolveAssemblyReference.cache
+D:\Projects\ComPortTerminal\ComPortTerminal\obj\Debug\MainWindow.baml
+D:\Projects\ComPortTerminal\ComPortTerminal\obj\Debug\MainWindow.g.cs
+D:\Projects\ComPortTerminal\ComPortTerminal\obj\Debug\App.g.cs
+D:\Projects\ComPortTerminal\ComPortTerminal\obj\Debug\ComPortTerminal_MarkupCompile.cache
+D:\Projects\ComPortTerminal\ComPortTerminal\obj\Debug\ComPortTerminal.g.resources
+D:\Projects\ComPortTerminal\ComPortTerminal\obj\Debug\ComPortTerminal.Properties.Resources.resources
+D:\Projects\ComPortTerminal\ComPortTerminal\obj\Debug\ComPortTerminal.csproj.GenerateResource.Cache
+D:\Projects\ComPortTerminal\ComPortTerminal\obj\Debug\ComPortTerminal.exe
+D:\Projects\ComPortTerminal\ComPortTerminal\obj\Debug\ComPortTerminal.pdb
+D:\Projects\ComPortTerminal\ComPortTerminal\obj\Debug\Styles\Metro\WindowStyle.baml

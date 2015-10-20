@@ -1,0 +1,59 @@
+﻿<Window x:Class="BlackBoxTerminal.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:c="clr-namespace:BlackBoxTerminal"
+        xmlns:model="clr-namespace:BlackBoxTerminal.Model"
+        xmlns:controls="clr-namespace:BlackBoxTerminal.Controls"
+        Style="{DynamicResource WindowMetroStyle}" 
+        WindowState="Maximized"
+        Title="BlackBox Terminal" MinHeight="500" MinWidth="900"
+        FocusVisualStyle="{x:Null}"
+        WindowStartupLocation="CenterScreen"
+        Icon="/BlackBoxTerminal;component/Resources/BlackBoxTerminal.ico">
+
+    <Grid >
+        <Border Margin="4">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Border BorderBrush="Silver" BorderThickness="0,0,0,1" VerticalAlignment="Bottom"/>
+                    <controls:ContextMenu Items="{Binding Path=MenuItems}" HorizontalAlignment="Left"/>
+                </Grid>
+                <Grid Grid.Row="1" Visibility="Visible">
+                    
+                    <controls:Settings/>
+                </Grid>
+                <Grid Grid.Row="2">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Border Grid.Column="0" Grid.Row="0" BorderThickness="1" BorderBrush="Gainsboro" Background="Transparent" Margin="0,2,1,1">
+                            <controls:Output  DataModelList="{Binding Path=OutputList, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"/>
+                        </Border>
+                        <Border Grid.Column="1" Grid.Row="0" BorderThickness="0" Margin="1,2,0,1">
+                            <controls:Device x:Name="DeviceControl" DeviceCollection="{Binding Path=DeviceCollection, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"/>
+                        </Border>
+                        <Border Grid.Column="0" Grid.Row="1" BorderThickness="1" BorderBrush="Gainsboro" Margin="0,1,1,0">
+                            <controls:Input DataModelList="{Binding Path=InputList, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"/>
+                        </Border>
+                        <Border Grid.Column="1" Grid.Row="1" BorderThickness="0" Margin="1,1,0,0">
+                            <controls:Rule Device="{Binding Path=SelectedDevice, ElementName=DeviceControl, Mode=TwoWay}"/>
+                        </Border>
+                    </Grid>
+                </Grid>
+                <Grid Grid.Row="2" Background="Black" Visibility="Collapsed" Opacity="0.2"></Grid>
+
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

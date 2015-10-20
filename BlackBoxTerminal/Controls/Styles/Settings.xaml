@@ -1,0 +1,156 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:c="clr-namespace:BlackBoxTerminal"
+                    xmlns:model="clr-namespace:BlackBoxTerminal.Model"
+                    xmlns:extensions="clr-namespace:BlackBoxTerminal.Extensions"
+                    xmlns:controls="clr-namespace:BlackBoxTerminal.Controls">
+    <Style TargetType="TextBlock" x:Key="SettingsTextBlock">
+        <Setter Property="Margin" Value="4"/>
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+
+    <Style TargetType="ComboBox" x:Key="SettingsComboBox">
+        <Setter Property="Margin" Value="4"/>
+        <Setter Property="Width" Value="120"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+
+    <Style TargetType="{x:Type controls:Settings}">
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Grid Name="MainPanel" Visibility="Collapsed">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="COM Port:" Style="{StaticResource SettingsTextBlock}" />
+                            <ComboBox Grid.Row="0" Grid.Column="1" ItemsSource="{extensions:ComPortsExtension}" 
+                                  SelectedItem="{Binding Path=ComPort,RelativeSource={RelativeSource TemplatedParent}}" 
+                                   />
+
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="Bit Rate:" Style="{StaticResource SettingsTextBlock}" />
+                            <ComboBox Grid.Row="1" Grid.Column="1" 
+                                  ItemsSource="{extensions:BitRatesExtension}" 
+                                  SelectedItem="{Binding Path=BitRate,RelativeSource={RelativeSource TemplatedParent}}" 
+                                  />
+
+                            <TextBlock Grid.Row="0" Grid.Column="2" Text="Parity:" Style="{StaticResource SettingsTextBlock}" />
+                            <ComboBox Grid.Row="0" Grid.Column="3" 
+                                  ItemsSource="{extensions:ParityExtension}" 
+                                  SelectedItem="{Binding Path=Parity,RelativeSource={RelativeSource TemplatedParent}}" 
+                                   />
+
+
+                            <TextBlock Grid.Row="1" Grid.Column="2" Text="Data Bits:" Style="{StaticResource SettingsTextBlock}" />
+                            <ComboBox Grid.Row="1" Grid.Column="3" 
+                                  ItemsSource="{extensions:DataBitsExtension}" 
+                                  SelectedItem="{Binding Path=DataBit,RelativeSource={RelativeSource TemplatedParent}}" 
+                                  />
+
+                            <TextBlock Grid.Row="0" Grid.Column="4" Text="Stop Bits:" Style="{StaticResource SettingsTextBlock}" />
+                            <ComboBox Grid.Row="0" Grid.Column="5" 
+                                  ItemsSource="{extensions:StopBitsExtension}" 
+                                  SelectedItem="{Binding Path=StopBits,RelativeSource={RelativeSource TemplatedParent}}" 
+                                   />
+
+
+                            <TextBlock Grid.Row="1" Grid.Column="4" Text="Handshake:" Style="{StaticResource SettingsTextBlock}" />
+                            <ComboBox Grid.Row="1" 
+                                  Grid.Column="5" ItemsSource="{extensions:HandshakeExtension}" 
+                                  SelectedItem="{Binding Path=Handshake,RelativeSource={RelativeSource TemplatedParent}}" 
+                                  />
+
+
+
+                        </Grid>
+                        <Grid Name="DisabledSettings" Visibility="Collapsed" Background="White">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="COM Port:" Style="{StaticResource SettingsTextBlock}" />
+                            <ComboBox Grid.Row="0" Grid.Column="1" ItemsSource="{extensions:ComPortsExtension}" IsEnabled="False"
+                                  SelectedItem="{Binding Path=ComPort,RelativeSource={RelativeSource TemplatedParent}}" 
+                                   />
+
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="Bit Rate:" Style="{StaticResource SettingsTextBlock}" />
+                            <ComboBox Grid.Row="1" Grid.Column="1" 
+                                  ItemsSource="{extensions:BitRatesExtension}" IsEnabled="False"
+                                  SelectedItem="{Binding Path=BitRate,RelativeSource={RelativeSource TemplatedParent}}" 
+                                  />
+
+                            <TextBlock Grid.Row="0" Grid.Column="2" Text="Parity:" Style="{StaticResource SettingsTextBlock}" />
+                            <ComboBox Grid.Row="0" Grid.Column="3" 
+                                  ItemsSource="{extensions:ParityExtension}" IsEnabled="False"
+                                  SelectedItem="{Binding Path=Parity,RelativeSource={RelativeSource TemplatedParent}}" 
+                                   />
+
+
+                            <TextBlock Grid.Row="1" Grid.Column="2" Text="Data Bits:" Style="{StaticResource SettingsTextBlock}" />
+                            <ComboBox Grid.Row="1" Grid.Column="3" 
+                                  ItemsSource="{extensions:DataBitsExtension}" IsEnabled="False"
+                                  SelectedItem="{Binding Path=DataBit,RelativeSource={RelativeSource TemplatedParent}}" 
+                                  />
+
+                            <TextBlock Grid.Row="0" Grid.Column="4" Text="Stop Bits:" Style="{StaticResource SettingsTextBlock}" />
+                            <ComboBox Grid.Row="0" Grid.Column="5" 
+                                  ItemsSource="{extensions:StopBitsExtension}" IsEnabled="False"
+                                  SelectedItem="{Binding Path=StopBits,RelativeSource={RelativeSource TemplatedParent}}" 
+                                   />
+
+
+                            <TextBlock Grid.Row="1" Grid.Column="4" Text="Handshake:" Style="{StaticResource SettingsTextBlock}" />
+                            <ComboBox Grid.Row="1" IsEnabled="False"
+                                  Grid.Column="5" ItemsSource="{extensions:HandshakeExtension}" 
+                                  SelectedItem="{Binding Path=Handshake,RelativeSource={RelativeSource TemplatedParent}}" 
+                                  />
+
+
+
+                        </Grid>
+                        <Border BorderBrush="Silver" BorderThickness="1,0,1,1"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <DataTrigger Binding="{Binding Path=IsConnected,RelativeSource={RelativeSource AncestorType=Window}}" Value="True">
+                            <Setter TargetName="DisabledSettings" Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Path=IsSettingsVisible,RelativeSource={RelativeSource AncestorType=Window}}" Value="True">
+                            <Setter TargetName="MainPanel" Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

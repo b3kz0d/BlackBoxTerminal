@@ -1,0 +1,182 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                     xmlns:model="clr-namespace:BlackBoxTerminal.Model"
+                    xmlns:extensionProperties="clr-namespace:BlackBoxTerminal.Extensions"
+                    xmlns:controls="clr-namespace:BlackBoxTerminal.Controls"
+                    xmlns:blackBoxTerminal="clr-namespace:BlackBoxTerminal"
+                    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity">
+
+    <model:ByteArrayToStringConverter x:Key="ByteArrayToStringConverter"/>
+    <model:ByteArrayToHexStringConverter  x:Key="ByteArrayToHexStringConverter"/>
+    <model:ByteArrayToBinaryStringConverter x:Key="ByteArrayToBinaryStringConverter"/>
+    <model:ColorConverter x:Key="ColorConverter"/>
+    <model:DateTimeConverter x:Key="DateTimeConverter"/>
+    <extensionProperties:ScrollViewerExtensions x:Key="ScrollViewerExtensions"/>
+
+    <SolidColorBrush x:Key="HexBackground" Color="Blue" Opacity="0.2"/>
+    <SolidColorBrush x:Key="DecBackground" Color="LimeGreen" Opacity="0.2"/>
+    
+    <DataTemplate x:Key="OutDataTemplate" DataType="{x:Type model:DataModel}">
+        <Grid Margin="4,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition SharedSizeGroup="Time"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            
+            <TextBlock Grid.Column="0" Text="{Binding Time}" Padding="2" Margin="4,2" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="LightSteelBlue"/>
+            <Border Grid.Column="1" BorderThickness="1,1,1,1" BorderBrush="Orange" Background="#fdfbef" CornerRadius="0" Margin="0,2" Padding="1" >
+                <Grid>
+                    <Border HorizontalAlignment="Left" Height="Auto" Width="5" Margin="1,1" BorderThickness="1" BorderBrush="Black" Background="{Binding Path=Color,Converter={StaticResource ColorConverter},ConverterParameter=Brush}"/>
+                    <ItemsControl Margin="8,0,0,0" ItemsSource="{Binding Data,Converter={StaticResource ByteArrayToStringConverter}}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Grid.Row="0" Name="txtAscii" Visibility="Collapsed" HorizontalAlignment="Center" Text="{Binding Path=.}" Foreground="Black"/>
+                                        <Border Grid.Row="1" Margin="1" Name="txtHex" Visibility="Collapsed" Background="{StaticResource HexBackground}">
+                                            <TextBlock HorizontalAlignment="Center" Text="{Binding Path=Text,ElementName=txtAscii, Converter={StaticResource ByteArrayToHexStringConverter}}" Foreground="Black" Padding="2,0" />
+                                        </Border>
+                                        <Border Grid.Row="2" Margin="1" Name="txtBinary" Visibility="Collapsed" Background="{StaticResource DecBackground}">
+                                            <TextBlock HorizontalAlignment="Center" Text="{Binding Path=Text, ElementName=txtAscii, Converter={StaticResource ByteArrayToBinaryStringConverter}}" Foreground="Black" Padding="2,0" />
+                                        </Border>
+                                    </Grid>
+                                </StackPanel>
+
+                                <DataTemplate.Triggers>
+                                    <DataTrigger Binding="{Binding Path=ShowAscii, RelativeSource={RelativeSource AncestorType=controls:Output}}" Value="True">
+                                        <Setter TargetName="txtAscii" Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Path=ShowHex, RelativeSource={RelativeSource AncestorType=controls:Output}}" Value="True">
+                                        <Setter TargetName="txtHex" Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Path=ShowBinary, RelativeSource={RelativeSource AncestorType=controls:Output}}" Value="True">
+                                        <Setter TargetName="txtBinary" Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </DataTemplate.Triggers>
+
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal" Margin="0"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                    </ItemsControl>
+                </Grid>
+            </Border>
+        </Grid>
+    </DataTemplate>
+
+    <Style TargetType="{x:Type controls:Output}">
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid Grid.Row="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left" Margin="2">
+                                <CheckBox x:Name="chbAscii" Margin="2" Background="Orange" Foreground="Orange"  Content="Ascii" IsChecked="{Binding Path=ShowAscii,RelativeSource={RelativeSource TemplatedParent},Mode=TwoWay}"/>
+                                <CheckBox x:Name="chbHex"  Margin="2" Background="Blue" Foreground="Blue" Content="Hex" IsChecked="{Binding Path=ShowHex,RelativeSource={RelativeSource TemplatedParent},Mode=TwoWay}"/>
+                                <CheckBox x:Name="chbBinary" Margin="2" Background="LimeGreen" Foreground="LimeGreen" Content="Decimal" IsChecked="{Binding Path=ShowBinary,RelativeSource={RelativeSource TemplatedParent},Mode=TwoWay}"/>
+                            </StackPanel>
+                            <Button Grid.Column="1"  Style="{DynamicResource WindowButtonStyle}" Command="{Binding Path=ClearCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"  CommandParameter="Output" Content="Clear" Foreground="Silver" Margin="2" Padding="2"/>
+                        </Grid>
+                        <Grid Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <ComboBox Grid.Column="0" SelectedValue="{Binding DataType}" ItemsSource="{controls:DataTypeExtension}">
+                                <!--<i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SelectionChanged">
+                                        <i:InvokeCommandAction Command="{Binding IsControlDownCommand,RelativeSource={RelativeSource AncestorType=model:TableNodeModel}}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>-->
+                                
+                            </ComboBox>
+                            <!--<ContentControl Content="{Binding TextBoxTemplate}"   Grid.Column="1" Margin="2" />-->
+                            <TextBox DataContext="{Binding TextBoxTemplate}" Name="txtCommand" Grid.Column="1" Margin="2" BorderBrush="Transparent" BorderThickness="0,0,0,0" Padding="2"  >
+                                <TextBox.Style>
+                                    <Style TargetType="TextBox" xmlns:sys="clr-namespace:System;assembly=mscorlib">
+                                        <Style.Resources>
+                                            <VisualBrush x:Key="CueBannerBrush" AlignmentX="Left" AlignmentY="Center" Stretch="None">
+                                                <VisualBrush.Visual>
+                                                    <Label Content="Enter command here" Foreground="LightGray" />
+                                                </VisualBrush.Visual>
+                                            </VisualBrush>
+                                        </Style.Resources>
+                                        <Style.Triggers>
+                                            <Trigger Property="Text" Value="{x:Static sys:String.Empty}">
+                                                <Setter Property="Background" Value="{StaticResource CueBannerBrush}" />
+                                            </Trigger>
+                                            <Trigger Property="Text" Value="{x:Null}">
+                                                <Setter Property="Background" Value="{StaticResource CueBannerBrush}" />
+                                            </Trigger>
+                                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                                <Setter Property="Background" Value="White" />
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBox.Style>
+                                <TextBox.InputBindings>
+                                    <KeyBinding Gesture="Enter"
+                                                        CommandParameter="{Binding ElementName=txtCommand}">
+                                        <KeyBinding.Command>
+                                            <Binding Path="SendCommand" RelativeSource="{RelativeSource AncestorType={x:Type Window}}" />
+                                        </KeyBinding.Command>
+                                    </KeyBinding>
+                                </TextBox.InputBindings>
+                            </TextBox>
+                            <Button Grid.Column="2" Width="28" Height="28"  Style="{DynamicResource WindowButtonStyle}" Command="{Binding Path=SendCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"  CommandParameter="{Binding ElementName=txtCommand}" Foreground="Silver" Margin="2" Padding="2">
+                                <Path Data="M45.963548,8.269645L62.665147,25.065546 45.963548,39.871244 45.963548,31.963644C45.963548,31.963644 17.120617,24.075571 9.909945,39.871244 9.9099454,35.922571 12.530199,16.167482 45.963548,16.167483z M0,0L41.778571,0 41.778571,4.1795139 41.778571,8.3590277 37.598714,8.3590277 37.598714,4.1795139 4.1798577,4.1795139 4.1798577,45.954649 37.598714,45.954649 37.598714,41.775137 41.778571,41.775137 41.778571,45.954649 41.778571,50.134165 37.598714,50.134165 0,50.134165 0,45.954649 0,4.1795139z" Stretch="Uniform" Fill="LimeGreen" Width="18" Height="18" Margin="0,0,0,0" RenderTransformOrigin="0.5,0.5">
+                                    <Path.RenderTransform>
+                                        <TransformGroup>
+                                            <TransformGroup.Children>
+                                                <RotateTransform Angle="0" />
+                                                <ScaleTransform ScaleX="1" ScaleY="1" />
+                                            </TransformGroup.Children>
+                                        </TransformGroup>
+                                    </Path.RenderTransform>
+                                </Path>
+                            </Button>
+                        </Grid>
+                        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" extensionProperties:ScrollViewerExtensions.AlwaysScrollToEnd="True">
+                            <ItemsControl Grid.IsSharedSizeScope="True" ItemsSource="{Binding Path=DataModelList,RelativeSource={RelativeSource TemplatedParent}}"
+                                          ItemTemplate="{StaticResource OutDataTemplate}">
+                                
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Vertical" Margin="0"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemContainerStyle>
+                                    <Style>
+                                        <Setter Property="FrameworkElement.Margin" Value="0"/>
+                                    </Style>
+                                </ItemsControl.ItemContainerStyle>
+                            </ItemsControl>
+                        </ScrollViewer>
+                    </Grid>
+
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>
