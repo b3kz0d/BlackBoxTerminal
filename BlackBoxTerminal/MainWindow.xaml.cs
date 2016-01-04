@@ -18,7 +18,7 @@ using BlackBoxTerminal.Model;
 
 using BlackBoxTerminal.Services;
 using Microsoft.Win32;
-
+using System.Text;
 
 namespace BlackBoxTerminal
 {
@@ -102,6 +102,20 @@ namespace BlackBoxTerminal
                 OnPropertyChanged("DataType");
             }
         }
+
+        
+        public string SampleByte
+        {
+            get
+            {
+                var e = Encoding.GetEncoding("iso-8859-1");
+                var s = e.GetString(new byte[] { 127 });
+                return s;
+            }
+           
+        }
+
+        
 
         public MainWindow()
         {

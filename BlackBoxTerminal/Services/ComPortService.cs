@@ -5,6 +5,7 @@ using System.IO.Ports;
 using System.Runtime.Remoting.Messaging;
 using System.Threading;
 using BlackBoxTerminal.Model;
+using System.IO;
 
 namespace BlackBoxTerminal.Services
 {    
@@ -222,12 +223,13 @@ namespace BlackBoxTerminal.Services
         /// Reads and displays the data.
         /// See FindPorts for the AddHandler statement for this routine.
         /// </summary>
-                
+        MemoryStream _memoryStream;
+        System.Timers.Timer _delayTimer;
         internal void DataReceived( object sender, SerialDataReceivedEventArgs e ) 
         {
             try 
             { 
-                //  Get data from the COM port.
+                //Get data from the COM port.
 
                 //SelectedPort.DtrEnable = true;
                 //SelectedPort.RtsEnable = true;
@@ -236,19 +238,18 @@ namespace BlackBoxTerminal.Services
                 byte[] buffer = new byte[bytes];
                 SelectedPort.Read(buffer, 0, bytes);
                 
-                var newReceivedData = SelectedPort.ReadExisting(); 
-                //  Save the number of characters received.
-                ReceivedDataLength += newReceivedData.Length;
-                if (_mDelayTimer == null) _mDelayTimer = new Stopwatch();
-                if (_mDelayTimer.IsRunning) _mDelayTimer.Stop();
-                var delay = _mDelayTimer.Elapsed;
-                
-                var elapsedString = delay.TotalMilliseconds>0? delay.ToString(@"ss\.fff"):"";
-                
-                if (null != UserInterfaceData) UserInterfaceData("AppendToMonitorInput", buffer);
-                
-                _mDelayTimer.Reset();
-                _mDelayTimer.Start();
+
+                if(_memoryStream==null) _memoryStream = new MemoryStream();
+                if (_delayTimer == null)
+                {
+                    _delayTimer = new System.Timers.Timer();
+                    _delayTimer.Interval = 2000;
+                    _delayTimer.Elapsed += _delayTimer_Elapsed;
+                    _delayTimer.AutoReset = true;
+                }
+                _memoryStream.Write(buffer, 0, buffer.Length);
+                _delayTimer.Stop();
+                _delayTimer.Start();
             } 
             catch ( Exception ex ) 
             { 
@@ -256,7 +257,21 @@ namespace BlackBoxTerminal.Services
             } 
         }
 
+        private void _delayTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            var buffer=_memoryStream.ToArray();
+            if (null != UserInterfaceData)
+                UserInterfaceData("AppendToMonitorInput", buffer);
+            _memoryStream = null;
+            _delayTimer.Stop();
 
+        }
+
+        public static void Reset(System.Timers.Timer timer)
+        {
+            timer.Stop();
+            timer.Start();
+        }
 
         public static string GetString(byte[] bytes)
         {

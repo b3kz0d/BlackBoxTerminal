@@ -17,7 +17,9 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    
                     <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0">
                     <Border BorderBrush="Silver" BorderThickness="0,0,0,1" VerticalAlignment="Bottom"/>
@@ -52,6 +54,9 @@
                     </Grid>
                 </Grid>
                 <Grid Grid.Row="2" Background="Black" Visibility="Collapsed" Opacity="0.2"></Grid>
+                <Grid Grid.Row="3">
+                    <Label Content="{Binding SampleByte}"/>
+                </Grid>
 
             </Grid>
         </Border>
