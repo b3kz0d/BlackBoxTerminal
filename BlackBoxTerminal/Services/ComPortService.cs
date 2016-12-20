@@ -243,7 +243,7 @@ namespace BlackBoxTerminal.Services
                 if (_delayTimer == null)
                 {
                     _delayTimer = new System.Timers.Timer();
-                    _delayTimer.Interval = 2000;
+                    _delayTimer.Interval = 200;
                     _delayTimer.Elapsed += _delayTimer_Elapsed;
                     _delayTimer.AutoReset = true;
                 }
